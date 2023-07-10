@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">Weather Application</string>
+    <string name="degree">°</string>
+    <string name="pascal">\u0020гПа</string>
+    <string name="velocity">\u0020м/с</string>
+
+    <string name="overcast">Пасмурно</string>
+    <string name="partly_cloudy">Малооблачно</string>
+    <string name="cloudy">Облачно\u0020с\u0020прояснениями</string>
+
+    <string name="clear">Ясно</string>
+
+    <string name="light_rain">Небольшой дождь</string>
+    <string name="rain">Дождь</string>
+    <string name="heavy_rain">Сильный дождь</string>
+    <string name="showers">Ливень</string>
+    <string name="wet_snow">Дождь со снегом</string>
+
+    <string name="light_snow">Небольшой снег</string>
+    <string name="snow">Снег</string>
+    <string name="snow_showers">Снегопад</string>
+    <string name="hail">Град</string>
+
+    <string name="thunderstorm">Гроза</string>
+    <string name="thunderstorm_with_rain">Дождь с грозой</string>
+    <string name="thunderstorm_with_hail">Гроза с градом</string>
+     — .
+
 </resources>
