@@ -12,9 +12,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import ru.solarmeister.weatherapplication.databinding.FragmentWeatherBinding
 import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -23,6 +23,9 @@ class WeatherFragment : Fragment() {
     private lateinit var binding: FragmentWeatherBinding
     private val weatherViewModel: WeatherViewModel by viewModels()
     private var coordinates = mutableListOf<Address>()
+    private val weatherFor4DaysAdapter: WeatherFor4DaysAdapter by lazy {
+        WeatherFor4DaysAdapter()
+    }
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -31,6 +34,7 @@ class WeatherFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentWeatherBinding.inflate(inflater, container, false)
+        setupRecyclerView()
         return binding.root
     }
 
@@ -56,9 +60,17 @@ class WeatherFragment : Fragment() {
         showCurrentWeather()
     }
 
+    private fun setupRecyclerView() {
+        with(binding) {
+            recyclerView4Days.layoutManager = LinearLayoutManager(requireContext())
+            recyclerView4Days.adapter = weatherFor4DaysAdapter
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     private fun showCurrentWeather() {
         weatherViewModel.weather.observe(viewLifecycleOwner) {
+            weatherFor4DaysAdapter.weatherFor2DaysDataList = it.weatherFor2DaysList
             val currentTime =
                 DateFormat.getTimeInstance(DateFormat.SHORT).format(Calendar.getInstance().time)
             if (it != null) {
@@ -183,8 +195,8 @@ class WeatherFragment : Fragment() {
                             weatherIcon.setImageResource(R.drawable.hail)
                         }
                     }
-                    //sunriseValue.text = weatherViewModel.getPrettyDate(it.sys.sunrise)
-                    //sunsetValue.text = weatherViewModel.getPrettyDate(it.sys.sunset)
+                    sunriseValue.text = it.sunrise
+                    sunsetValue.text = it.sunset
                 }
             }
         }

@@ -10,8 +10,8 @@ import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
 import ru.solarmeister.weatherapplication.model.current_weather.Weather
-import java.text.SimpleDateFormat
-import java.util.*
+import ru.solarmeister.weatherapplication.model.current_weather.WeatherFor2Days
+import ru.solarmeister.weatherapplication.model.current_weather.WeatherFor2DaysData
 
 class WeatherViewModel : ViewModel() {
 
@@ -55,19 +55,44 @@ class WeatherViewModel : ViewModel() {
                 val currentPressureElement = document.select("div.term.term_orient_v.fact__pressure")
                 val currentHumidityElement = document.select("div.term.term_orient_v.fact__humidity")
                 val conditionElement = document.select("div.link__condition.day-anchor.i-bem")
+                val weatherTo2Days = getListOfWeatherTo2Days(temperaturesElement.eachText(), timesElements.eachText())
                 _weather.postValue(Weather(
                     currentTempElements.text(),
                     getPressureOrHumidityFromHTML(currentPressureElement),
                     getPressureOrHumidityFromHTML(currentHumidityElement),
                     currentWindElement.text(),
                     conditionElement.textNodes()[0].text(),
-                    timesElements.eachText(),
-                    temperaturesElement.eachText()
+                    weatherTo2Days.weatherFor2DaysList,
+                    weatherTo2Days.sunrise,
+                    weatherTo2Days.sunset
                 ))
             }
         } catch (e: java.lang.Exception) {
             Log.e("Error", "Error")
         }
+    }
+
+    private fun getListOfWeatherTo2Days(
+        temperatures: MutableList<String>,
+        times: MutableList<String>
+    ): WeatherFor2Days {
+        var sunrise = ""
+        var sunset = ""
+        val sunriseIndex = temperatures.indexOf("Восход")
+        val sunsetIndex = temperatures.indexOf("Закат")
+        if (temperatures.contains("Закат") && temperatures.contains("Восход")) {
+            sunrise = times[sunriseIndex]
+            sunset = times[sunsetIndex]
+            times.removeAt(sunriseIndex)
+            times.removeAt(sunsetIndex)
+            temperatures.remove("Закат")
+            temperatures.remove("Восход")
+        }
+        val weatherFor2DaysData = mutableListOf<WeatherFor2DaysData>()
+        for ((i, time) in times.withIndex()) {
+            weatherFor2DaysData.add(WeatherFor2DaysData(time, temperatures[i]))
+        }
+        return WeatherFor2Days(weatherFor2DaysData, sunrise, sunset)
     }
 
     private fun getPressureOrHumidityFromHTML(elements: Elements): String {

@@ -6,6 +6,11 @@ data class Weather(
     val humidity: String,
     val wind: String,
     val condition: String,
-    val listTimes: List<String>,
-    val listTemp: List<String>
+    val weatherFor2DaysList: List<WeatherFor2DaysData>,
+    val sunrise: String,
+    val sunset: String
     )
+
+data class WeatherFor2Days(val weatherFor2DaysList: List<WeatherFor2DaysData>, val sunrise: String, val sunset: String)
+
+data class WeatherFor2DaysData(val time: String, val temperature: String)

@@ -176,14 +176,14 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView4Days"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/line"
-                app:layout_constraintBottom_toBottomOf="@id/line"
-                tools:listitem="@layout/item_weather"/>
+                tools:itemCount="30"
+                tools:listitem="@layout/item_weather" />
 
             <View
                 android:id="@+id/line"
